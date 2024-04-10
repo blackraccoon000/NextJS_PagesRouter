@@ -1,20 +1,25 @@
-import {useEffect} from "react";
+import {Layout} from "@/components/layouts/Layout";
+import {AuthContext} from "@/components/providers/AuthProvider";
+import {useContext} from "react";
 
 const Test = () => {
-  useEffect(() => {
-    fetch("/api/hello")
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data.name);
-      });
-  }, []);
+  const {loggedIn, setLoggedIn} = useContext(AuthContext);
+
   return (
-    <main
-      className={`flex min-h-screen flex-col items-center justify-between p-24`}
-    >
-      <h1>Test</h1>
-    </main>
+    <div className="flex flex-col gap-5">
+      <h1>ログイン状況をコントロール</h1>
+      <button
+        className="border rounded bg-blue-300 px-4 py-2"
+        onClick={() => setLoggedIn((loggedIn) => !loggedIn)}
+      >
+        {loggedIn ? "ログアウト" : "ログイン"}
+      </button>
+    </div>
   );
+};
+
+Test.getLayout = (page: React.ReactNode) => {
+  return <Layout>{page}</Layout>;
 };
 
 export default Test;
