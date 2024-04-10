@@ -1,4 +1,5 @@
 import React, {createContext, useEffect, useState} from "react";
+import useSWR from "swr";
 
 type AuthContextProps = {
   loggedIn: boolean;
@@ -17,14 +18,21 @@ type Props = {
 export const AuthProvider = ({children}: Props) => {
   const [loggedIn, setLoggedIn] = useState(false);
 
-  // ログイン状況を取得
-  useEffect(() => {
-    fetch("/api/loggedin")
-      .then((res) => res.json())
-      .then((data) => {
-        setLoggedIn(data.loggedIn);
-      });
-  }, []);
+  useSWR(
+    "/api/loggedin",
+    async (url) => {
+      console.log("Fetching data AuthProvider:", url);
+
+      const res = await fetch(url);
+      const data = await res.json();
+      return data;
+    },
+    {
+      onSuccess(data, key, config) {
+        setLoggedIn(data?.loggedIn);
+      },
+    }
+  );
 
   return (
     <AuthContext.Provider value={{loggedIn, setLoggedIn}}>

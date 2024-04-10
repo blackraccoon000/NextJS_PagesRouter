@@ -1,6 +1,10 @@
 ### ログイン状況により Layout を切り替えるサンプル
 
-`npm run dev`から`http://localhost:3000/test`を開く
+`npm run dev`
+
+`http://localhost:3000/test`は context provider での実装例
+
+`http://localhost:3000/swr_test`は useSWR の dedupingInterval での実装例
 
 ### 構成
 
@@ -19,3 +23,13 @@
 #### ログイン済み
 
 ![ログイン済み](document/images/screen-shot20240410_2.png)
+
+#### useSWR
+
+https://swr.vercel.app/ja/docs/api
+
+useSWR の dedupingInterval オプションは、同じキーに対する連続するリクエストをデデュプリケート（重複排除）する時間をミリ秒単位で指定します。これは、指定した時間内に同じキーで useSWR フックが複数回呼び出された場合、実際のデータ取得は 1 回だけ行われ、その結果がすべての useSWR フックに共有されることを意味します。
+
+重複排除を検知することはできないが、console.log を配置することで、起動時にどれが発火したかを観察することができる。
+
+![発火確認](document/images/screen-shot20240410_3.png)
